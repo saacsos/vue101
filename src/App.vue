@@ -9,24 +9,65 @@
           <router-link
             class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
             to="/"
-            >Home</router-link
           >
+            Home
+          </router-link>
           <router-link
             class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
             to="/pokemon"
-            >Pokemon</router-link
           >
+            Pokemon
+          </router-link>
+          <router-link
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/pokedex"
+          >
+            Pokedex
+          </router-link>
           <router-link
             class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
             to="/about"
-            >About</router-link
           >
+            About
+          </router-link>
+          <router-link
+            v-if="!isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/register"
+          >
+            Register
+          </router-link>
+          <router-link
+            v-if="!isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/login"
+          >
+            Login
+          </router-link>
+          <router-link
+            v-if="isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/logout"
+          >
+            Logout
+          </router-link>
         </div>
       </div>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import AuthUser from "@/store/AuthUser"
+export default {
+  methods: {
+    isAuthen() {
+      return AuthUser.getters.isAuthen
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {

@@ -1,6 +1,13 @@
 <template>
   <div class="mx-auto w-full max-w-xs">
-    <form @submit.prevent="addPokemon" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <h1 class="text-3xl bold p-4">
+      Add New Pokedex
+    </h1>
+
+    <form
+      @submit.prevent="addPokemon"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
           Pokemon Name (EN)
@@ -10,21 +17,8 @@
           id="name"
           type="text"
           autocomplete="off"
-          v-model="form.name.english"
+          v-model="form.name"
           placeholder="Pokemon Name"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="name_jp">
-          Pokemon Name (JP)
-        </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="name_jp"
-          type="text"
-          autocomplete="off"
-          v-model="form.name.japanese"
-          placeholder="ポケモン名"
         />
       </div>
       <div class="mb-4">
@@ -54,37 +48,52 @@
 </template>
 
 <script>
-import { pokemon } from "@/store/Pokemon"
+import PokedexApiStore from "@/store/PokedexApi"
+import AuthUser from "@/store/AuthUser"
+
 export default {
   data() {
     return {
       form: {
-        name: {
-          english: "",
-          japanese: "",
-        },
-        type: [],
+        name: "",
+        type: "",
       },
+    }
+  },
+  mounted() {
+    if (!this.isAuthen()) {
+      this.$swal("Restricted Area", "You have no permission", "warning")
+      return this.$router.push('/pokedex')
     }
   },
   methods: {
     clearForm() {
       this.form = {
-        name: {
-          english: "",
-          japanese: "",
-        },
-        type: [],
+        name: "",
+        type: "",
       }
     },
     async addPokemon() {
-      let payload = {
-        name: this.form.name,
-        type: this.form.type.split(",").map((item) => item.trim()),
+      if (this.form.type.trim() !== "" && this.form.name.trim() !== "") {
+        let payload = {
+          name: this.form.name,
+          type: this.form.type.split(",").map((item) => item.trim()),
+        }
+        let res = await PokedexApiStore.dispatch("addPokemon", payload)
+        if (res.success) {
+          this.clearForm()
+          this.$router.push("/pokedex")
+        } else {
+          console.log(res)
+          this.$swal("An error occurred", res.message, "error")
+        }
+      } else {
+        this.$swal("Data is required", "Please type your data", "info")
       }
-      await pokemon.dispatch("addPokemon", payload)
-      this.clearForm()
     },
+    isAuthen() {
+      return AuthUser.getters.isAuthen
+    }
   },
 }
 </script>

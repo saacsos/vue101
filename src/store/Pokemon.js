@@ -29,8 +29,8 @@ export const pokemon = new Vuex.Store({
   },
   actions: {
     async fetchPokemon({ commit }) {
-      // let res = await Axios.get(api_endpoint)
-      // commit("fetch", { res })
+      let res = await Axios.get(api_endpoint)
+      commit("fetch", { res })
     },
     addPokemon({ commit }, payload) {
       commit("add", { payload })

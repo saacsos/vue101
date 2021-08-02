@@ -5,8 +5,10 @@ import store from './store'
 
 import VueAxios from 'vue-axios'
 import axios from 'axios'
+import VueSwal from "vue-swal"
 
 Vue.use(VueAxios, axios)
+Vue.use(VueSwal)
 
 import "@/assets/styles/tailwind.css";
 

@@ -7,21 +7,67 @@
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="text-sm lg:flex-grow">
           <router-link
-            class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
             to="/"
-            >Home</router-link
           >
+            Home
+          </router-link>
           <router-link
-            class="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-            to="/about"
-            >About</router-link
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/pokemon"
           >
+            Pokemon
+          </router-link>
+          <router-link
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/pokedex"
+          >
+            Pokedex
+          </router-link>
+          <router-link
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/about"
+          >
+            About
+          </router-link>
+          <router-link
+            v-if="!isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/register"
+          >
+            Register
+          </router-link>
+          <router-link
+            v-if="!isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/login"
+          >
+            Login
+          </router-link>
+          <router-link
+            v-if="isAuthen()"
+            class="block mt-2 sm:inline-block lg:mt-0 hover:text-white mr-4"
+            to="/logout"
+          >
+            Logout
+          </router-link>
         </div>
       </div>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import AuthUser from "@/store/AuthUser"
+export default {
+  methods: {
+    isAuthen() {
+      return AuthUser.getters.isAuthen
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
